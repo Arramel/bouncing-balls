@@ -6,6 +6,14 @@ let height = window.innerHeight
 canvas.width = width;
 canvas.height = height;
 
+let mousex = 0;
+let mousey = 0;
+
+addEventListener('mousemove', () => {
+    mousex = event.clientX;
+    mousey = event.clientY;
+});
+
 const randomColour = () => {
     return 'rgba(' + Math.floor(Math.random() * 250) +
         ',' + Math.floor(Math.random() * 250) +
@@ -18,6 +26,7 @@ class Ball {
     constructor() {
         this.colour = randomColour();
         this.radius = Math.random() * 15 + 20;
+        this.startradius = this.radius;
         this.x = Math.random() * (width - this.radius * 2) + this.radius;
         this.y = Math.random() * (height - this.radius * 2) + this.radius;
         this.vx = Math.random() * 1.5 + 2;
@@ -35,7 +44,7 @@ class Ball {
 
 const balls = [];
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 60; i++) {
     balls.push(new Ball());
 }
 
@@ -66,6 +75,16 @@ const animate = () => {
             ball.vy = -ball.vy;
         } else {
             ball.vy += ball.g;
+        }
+
+        if (mousex > ball.x - ball.radius &&
+            mousex < ball.x + ball.radius &&
+            mousey > ball.y - ball.radius &&
+            mousey < ball.y + ball.radius &&
+            ball.radius < 70) {
+            ball.radius += 5;
+        } else if (ball.radius > ball.startradius) {
+            ball.radius -= 5;
         }
 
     }
